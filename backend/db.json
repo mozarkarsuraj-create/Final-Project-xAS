@@ -1,0 +1,540 @@
+{
+  "users": [
+    {
+      "id": 1776327480290,
+      "name": "Akshay Bankar",
+      "email": "akshaybankar076@gmail.com",
+      "password": "$2b$10$Uj5KFw2TxXZ.4DqrnrQZO.oyuBdQd9Ee0sY4tr2uQMRE78gX9uH5i",
+      "role": "admin",
+      "location": "Sadar",
+      "profile_pic_sim": "https://api.dicebear.com/8.x/initials/svg?seed=Akshay%20Bankar"
+    },
+    {
+      "id": 1776335277831,
+      "name": "Pranav tute",
+      "email": "pranavtute265@gmail.com",
+      "password": "$2b$10$83fuNJrUjTz2/IFYdQwZmelsoFZF1Ai3nllasoBpNWjl4QnhRwZgG",
+      "role": "user",
+      "location": "Chhaoni",
+      "profile_pic_sim": "https://api.dicebear.com/8.x/initials/svg?seed=Pranav%20tute"
+    },
+    {
+      "id": 1776335414748,
+      "name": "Suraj Mozarkar",
+      "email": "surajmozarkar197@gmail.com",
+      "password": "$2b$10$6s05mkfwRywj/z36ULggV.pVIO7aaSZF7iO3iGMor5KKZABVp3I0e",
+      "role": "helper",
+      "location": "Sadar",
+      "isAvailable": true,
+      "profile_pic_sim": "https://api.dicebear.com/8.x/initials/svg?seed=Suraj%20Mozarkar"
+    },
+    {
+      "id": 1776369085747,
+      "name": "mangesh wadatkar",
+      "email": "wadatkarmangesh94@gmail.com",
+      "password": "$2b$10$mnbiG9hNFsJzAf8GXE1Fiu47JYpnrOHKTUYF5viThpetnKS2NQDLq",
+      "role": "user",
+      "location": "Manish Nagar",
+      "profile_pic_sim": "https://api.dicebear.com/8.x/initials/svg?seed=mangesh%20wadatkar"
+    },
+    {
+      "id": 1776369764721,
+      "name": "Saniya Sonule",
+      "email": "saniya@gmail.com",
+      "password": "$2b$10$tQMuRdjTr4w64zuvdCFEFO8T64eAY6XH0qpR8D7qrI7xZaaYLwIYq",
+      "role": "admin",
+      "location": "Manish Nagar",
+      "profile_pic_sim": "https://api.dicebear.com/8.x/initials/svg?seed=Saniya%20Sonule"
+    },
+    {
+      "id": 1776370027904,
+      "name": "Suraj",
+      "email": "mozarkarsuraj@gmail.com",
+      "password": "$2b$10$DEyQQo8cFcTEvtH.rkakJuhAUEHjwhvbNEvawy6KrDJ8UhJ8/bbTO",
+      "role": "helper",
+      "location": "Manish Nagar",
+      "isAvailable": true,
+      "profile_pic_sim": "https://api.dicebear.com/8.x/initials/svg?seed=Suraj"
+    },
+    {
+      "id": 1776761997433,
+      "name": "suraj",
+      "email": "surajmozarkar@gmail.com",
+      "password": "$2b$10$R467c7kLwOmruZk8slkTtux0QbTxNK8T2FOzOAo/0nELhtoQmngsm",
+      "role": "helper",
+      "location": "Manish Nagar",
+      "isAvailable": true,
+      "profile_pic_sim": "https://api.dicebear.com/8.x/initials/svg?seed=suraj"
+    },
+    {
+      "id": 1776763593372,
+      "name": "saniya",
+      "email": "saniyasonule@gmail.com",
+      "password": "$2b$10$fMFxRAhv2SivjO3bRaZBr..4mu0EGs4T3sEhkji7EAcuLlLH8u8/G",
+      "role": "admin",
+      "location": "Manish Nagar",
+      "profile_pic_sim": "https://api.dicebear.com/8.x/initials/svg?seed=saniya"
+    },
+    {
+      "id": 1776763781807,
+      "name": "Pranav tute",
+      "email": "pranavtute@gmail.com",
+      "password": "$2b$10$FCDk8.lYsnLIpK1MY1jvR.5WuvbOiZKFYjdjM8Q1suIdAUQXTgqk6",
+      "role": "user",
+      "location": "Manish Nagar",
+      "profile_pic_sim": "https://api.dicebear.com/8.x/initials/svg?seed=Pranav%20tute"
+    },
+    {
+      "id": 1784347632978,
+      "name": "Ram V",
+      "email": "ramingle8511@gmail.com",
+      "password": "$2b$10$hjHj29Shd6VV.gAvjuIjiOIDm29oEwprTUdyVJfXyEAohfy3Uy5l6",
+      "role": "user",
+      "location": "Manish Nagar",
+      "profile_pic_sim": "https://api.dicebear.com/8.x/initials/svg?seed=Ram%20V"
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "name": "Deep House Cleaning",
+      "price": 1200
+    },
+    {
+      "id": 2,
+      "name": "Plumbing Repairs",
+      "price": 400
+    },
+    {
+      "id": 3,
+      "name": "Electrical Installation & Repair",
+      "price": 350
+    },
+    {
+      "id": 4,
+      "name": "Gardening & Lawn Care",
+      "price": 600
+    },
+    {
+      "id": 5,
+      "name": "Pest Control",
+      "price": 1500
+    },
+    {
+      "id": 6,
+      "name": "AC Servicing & Gas Top-up",
+      "price": 850
+    },
+    {
+      "id": 7,
+      "name": "Carpentry Work",
+      "price": 500
+    },
+    {
+      "id": 8,
+      "name": "House Painting (Per Room)",
+      "price": 3000
+    },
+    {
+      "id": 9,
+      "name": "Washing Machine Repair",
+      "price": 450
+    },
+    {
+      "id": 10,
+      "name": "Refrigerator Repair",
+      "price": 400
+    },
+    {
+      "id": 11,
+      "name": "TV Mounting & Installation",
+      "price": 350
+    },
+    {
+      "id": 12,
+      "name": "RO Water Purifier Servicing",
+      "price": 300
+    },
+    {
+      "id": 13,
+      "name": "Geyser Installation & Repair",
+      "price": 400
+    },
+    {
+      "id": 14,
+      "name": "Sofa & Carpet Dry Cleaning",
+      "price": 900
+    },
+    {
+      "id": 15,
+      "name": "Bathroom Deep Cleaning",
+      "price": 600
+    },
+    {
+      "id": 16,
+      "name": "Kitchen Deep Cleaning",
+      "price": 800
+    },
+    {
+      "id": 17,
+      "name": "Car Wash (At Home)",
+      "price": 350
+    },
+    {
+      "id": 18,
+      "name": "Bike Servicing (At Home)",
+      "price": 450
+    },
+    {
+      "id": 19,
+      "name": "Salon for Men (Haircut & Beard)",
+      "price": 250
+    },
+    {
+      "id": 20,
+      "name": "Salon for Women (Waxing & Threading)",
+      "price": 600
+    },
+    {
+      "id": 21,
+      "name": "Massage Therapy for Men",
+      "price": 999
+    },
+    {
+      "id": 22,
+      "name": "Massage Therapy for Women",
+      "price": 999
+    },
+    {
+      "id": 23,
+      "name": "Professional Makeup Artist",
+      "price": 2500
+    },
+    {
+      "id": 24,
+      "name": "Mehndi Artist",
+      "price": 1000
+    },
+    {
+      "id": 25,
+      "name": "Packaged RO Water Delivery",
+      "price": 50
+    },
+    {
+      "id": 26,
+      "name": "Homemade Tiffin Service (1 Meal)",
+      "price": 120
+    },
+    {
+      "id": 27,
+      "name": "Grocery Delivery Appt.",
+      "price": 100
+    },
+    {
+      "id": 28,
+      "name": "Prescription Medicine Delivery",
+      "price": 80
+    },
+    {
+      "id": 29,
+      "name": "Laundry & Ironing (Per kg)",
+      "price": 60
+    },
+    {
+      "id": 30,
+      "name": "Premium Dry Cleaning",
+      "price": 250
+    },
+    {
+      "id": 31,
+      "name": "Home Tutoring (Math/Science - 1 Hr)",
+      "price": 400
+    },
+    {
+      "id": 32,
+      "name": "Yoga Instructor (At Home)",
+      "price": 500
+    },
+    {
+      "id": 33,
+      "name": "Personal Fitness Trainer",
+      "price": 600
+    },
+    {
+      "id": 34,
+      "name": "Dog Walking",
+      "price": 200
+    },
+    {
+      "id": 35,
+      "name": "Pet Bathing & Grooming",
+      "price": 700
+    },
+    {
+      "id": 36,
+      "name": "Driver on Call (4 Hours)",
+      "price": 500
+    },
+    {
+      "id": 37,
+      "name": "Event Photography (Per Hour)",
+      "price": 1500
+    },
+    {
+      "id": 38,
+      "name": "Pandit/Purohit for Puja",
+      "price": 1100
+    },
+    {
+      "id": 39,
+      "name": "Interior Design Consultation",
+      "price": 1000
+    },
+    {
+      "id": 40,
+      "name": "Packers and Movers (Local)",
+      "price": 4500
+    },
+    {
+      "id": 41,
+      "name": "Laptop/PC Repair",
+      "price": 500
+    },
+    {
+      "id": 42,
+      "name": "Mobile Screen Replacement",
+      "price": 1200
+    },
+    {
+      "id": 43,
+      "name": "CCTV Installation (Per Camera)",
+      "price": 600
+    },
+    {
+      "id": 44,
+      "name": "Smart Home Device Setup",
+      "price": 400
+    },
+    {
+      "id": 45,
+      "name": "Inverter & Battery Servicing",
+      "price": 300
+    },
+    {
+      "id": 46,
+      "name": "False Ceiling Repair",
+      "price": 800
+    },
+    {
+      "id": 47,
+      "name": "Roof Waterproofing",
+      "price": 2000
+    },
+    {
+      "id": 48,
+      "name": "Aluminium Window/Partition Repair",
+      "price": 750
+    },
+    {
+      "id": 49,
+      "name": "Welder & Fabrication Works",
+      "price": 650
+    },
+    {
+      "id": 50,
+      "name": "Scrap Collection (Kabadiwala)",
+      "price": 0
+    }
+  ],
+  "bookings": [
+    {
+      "id": 1712065000000,
+      "customerId": 999,
+      "customerName": "Amit Deshmukh",
+      "customerLocation": "Wardha Road",
+      "serviceId": 1,
+      "serviceName": "Deep House Cleaning",
+      "date": "2026-04-16",
+      "status": "completed",
+      "helperId": 1775135513692,
+      "helperName": "Ashvin Bagde",
+      "price_sim": 1200
+    },
+    {
+      "id": 1712065100000,
+      "customerId": 998,
+      "customerName": "Priya Sharma",
+      "customerLocation": "Sitabuldi",
+      "serviceId": 6,
+      "serviceName": "AC Servicing & Gas Top-up",
+      "date": "2026-04-17",
+      "status": "en_route",
+      "helperId": 1775135513693,
+      "helperName": "Ramesh Tiwari",
+      "price_sim": 850
+    },
+    {
+      "id": 1712065200000,
+      "customerId": 998,
+      "customerName": "Priya Sharma",
+      "customerLocation": "Sitabuldi",
+      "serviceId": 2,
+      "serviceName": "Plumbing Repairs",
+      "date": "2026-04-18",
+      "status": "requested",
+      "helperId": null,
+      "helperName": "Searching nearby helpers...",
+      "price_sim": 400
+    },
+    {
+      "id": 1776335341093,
+      "customerId": 1776335277831,
+      "customerName": "Pranav tute",
+      "customerLocation": "Chhaoni",
+      "exactLocation": "Chhaoni, Sadar",
+      "paymentMethod": "UPI",
+      "serviceId": 41,
+      "serviceName": "Laptop/PC Repair",
+      "date": "2026-05-05",
+      "status": "completed",
+      "helperId": 1776335414748,
+      "helperName": "Suraj Mozarkar",
+      "price_sim": 500
+    },
+    {
+      "id": 1776368967359,
+      "customerId": 1776335277831,
+      "customerName": "Pranav tute",
+      "customerLocation": "Chhaoni",
+      "exactLocation": "sadar",
+      "paymentMethod": "COD",
+      "serviceId": 1,
+      "serviceName": "Deep House Cleaning",
+      "date": "2026-04-20",
+      "status": "completed",
+      "helperId": 1776370027904,
+      "helperName": "Suraj",
+      "price_sim": 1200
+    },
+    {
+      "id": 1776369948060,
+      "customerId": 1776335277831,
+      "customerName": "Pranav tute",
+      "customerLocation": "Chhaoni",
+      "exactLocation": "Sadar",
+      "paymentMethod": "COD",
+      "serviceId": 2,
+      "serviceName": "Plumbing Repairs",
+      "date": "2026-04-19",
+      "status": "requested",
+      "helperId": null,
+      "helperName": "Searching nearby helpers...",
+      "price_sim": 400
+    },
+    {
+      "id": 1776370471660,
+      "customerId": 1776335277831,
+      "customerName": "Pranav tute",
+      "customerLocation": "Chhaoni",
+      "exactLocation": "sadar",
+      "paymentMethod": "UPI",
+      "serviceId": 16,
+      "serviceName": "Kitchen Deep Cleaning",
+      "date": "2026-04-16",
+      "status": "requested",
+      "helperId": null,
+      "helperName": "Searching nearby helpers...",
+      "price_sim": 800
+    },
+    {
+      "id": 1776370573862,
+      "customerId": 1776335277831,
+      "customerName": "Pranav tute",
+      "customerLocation": "Chhaoni",
+      "exactLocation": "sitaburdi",
+      "paymentMethod": "COD",
+      "serviceId": 11,
+      "serviceName": "TV Mounting & Installation",
+      "date": "2026-04-20",
+      "status": "completed",
+      "helperId": 1776335414748,
+      "helperName": "Suraj Mozarkar",
+      "price_sim": 350
+    },
+    {
+      "id": 1776370806433,
+      "customerId": 1776335277831,
+      "customerName": "Pranav tute",
+      "customerLocation": "Chhaoni",
+      "exactLocation": "Manakapur",
+      "paymentMethod": "UPI",
+      "serviceId": 11,
+      "serviceName": "TV Mounting & Installation",
+      "date": "2026-04-26",
+      "status": "accepted",
+      "helperId": 1776335414748,
+      "helperName": "Suraj Mozarkar",
+      "price_sim": 350
+    },
+    {
+      "id": 1776761909428,
+      "customerId": 1776335277831,
+      "customerName": "Pranav tute",
+      "customerLocation": "Chhaoni",
+      "exactLocation": "",
+      "paymentMethod": "UPI",
+      "serviceId": 13,
+      "serviceName": "Geyser Installation & Repair",
+      "date": "2026-04-21",
+      "status": "requested",
+      "helperId": null,
+      "helperName": "Searching nearby helpers...",
+      "price_sim": 400
+    },
+    {
+      "id": 1776762066232,
+      "customerId": 1776335277831,
+      "customerName": "Pranav tute",
+      "customerLocation": "Chhaoni",
+      "exactLocation": "Sadar",
+      "paymentMethod": "COD",
+      "serviceId": 12,
+      "serviceName": "RO Water Purifier Servicing",
+      "date": "2026-04-21",
+      "status": "requested",
+      "helperId": null,
+      "helperName": "Searching nearby helpers...",
+      "price_sim": 300
+    },
+    {
+      "id": 1776763860767,
+      "customerId": 1776763781807,
+      "customerName": "Pranav tute",
+      "customerLocation": "Manish Nagar",
+      "exactLocation": "Sadar",
+      "paymentMethod": "COD",
+      "serviceId": 1,
+      "serviceName": "Deep House Cleaning",
+      "date": "2026-04-21",
+      "status": "requested",
+      "helperId": null,
+      "helperName": "Searching nearby helpers...",
+      "price_sim": 1200
+    },
+    {
+      "id": 1784347676835,
+      "customerId": 1784347632978,
+      "customerName": "Ram V",
+      "customerLocation": "Manish Nagar",
+      "exactLocation": "Hingna Road near petrol pump",
+      "paymentMethod": "COD",
+      "serviceId": 5,
+      "serviceName": "Pest Control",
+      "date": "2026-07-18",
+      "status": "requested",
+      "helperId": null,
+      "helperName": "Searching nearby helpers...",
+      "price_sim": 1500
+    }
+  ]
+}

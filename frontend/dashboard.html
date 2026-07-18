@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Nagpur Service Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <header class="dashboard-header">
+      <div class="user-profile-header">
+        <img id="user-profile-pic" src="" alt="Profile">
+        <div class="user-info">
+          <h1 id="welcome-name">Loading…</h1>
+          <p style="margin:0; font-size:0.85rem; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <span id="role-display" class="role-badge"></span>
+            <span style="color:var(--border-bright)">·</span>
+            <span id="location-display" style="color:var(--text-muted)"></span>
+          </p>
+        </div>
+      </div>
+      <button onclick="logout()" class="primary-btn logout-btn">Log Out</button>
+    </header>
+
+    <main id="main-content" class="dashboard-grid">
+      <div class="skeleton-loader">
+        <div class="skeleton-card">
+          <div class="skeleton-line wide"></div>
+          <div class="skeleton-line medium"></div>
+          <div class="skeleton-line short"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-line wide"></div>
+          <div class="skeleton-line medium"></div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    /* ══════════════════════════════════════════════
+       1. AUTH GUARD
+    ══════════════════════════════════════════════ */
+    const token   = localStorage.getItem('token');
+    const userStr = localStorage.getItem('user');
+    if (!token || !userStr) { window.location.href = 'index.html'; }
+
+    const currentUser    = JSON.parse(userStr);
+    const defaultHeaders = {
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    };
+
+    document.getElementById('welcome-name').innerText     = `Hello, ${currentUser.name}!`;
+    document.getElementById('location-display').innerText = currentUser.location || 'Nagpur';
+
+    const roleEl = document.getElementById('role-display');
+    roleEl.innerText = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+    roleEl.classList.add(`role-${currentUser.role}`);
+
+    const pic = document.getElementById('user-profile-pic');
+    pic.src = currentUser.profile_pic_sim || `https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(currentUser.name)}`;
+    pic.onerror = () => { pic.src = `https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(currentUser.name)}`; };
+
+    const main = document.getElementById('main-content');
+
+    /* ══════════════════════════════════════════════
+       2. UTILITY HELPERS
+    ══════════════════════════════════════════════ */
+    function emptyState(msg) {
+      return `<p class="empty-state-text">${msg}</p>`;
+    }
+
+    function renderBookingTable(list, showHelper = false) {
+      if (!list || !list.length) return emptyState('No records found.');
+      let t = `
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Location Details</th>
+                <th>Date</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Price</th>
+                ${showHelper ? '<th>Helper / Customer</th>' : ''}
+              </tr>
+            </thead>
+            <tbody>`;
+      list.forEach(b => {
+        const label = showHelper ? (b.helperName || b.customerName || '—') : '';
+        const exact = b.exactLocation ? `<br><span style="font-size:0.8rem; color:var(--text-muted)">↳ ${b.exactLocation}</span>` : '';
+        const payBadgeCls = b.paymentMethod === 'UPI' ? 'badge-completed' : (b.paymentMethod === 'Card' ? 'badge-en_route' : 'badge-requested');
+
+        t += `
+          <tr>
+            <td>${b.serviceName || '—'}</td>
+            <td>📍 ${b.customerLocation || 'N/A'}${exact}</td>
+            <td>${b.date || '—'}</td>
+            <td><span class="badge ${payBadgeCls}" style="background:transparent; border-color:var(--border)">${b.paymentMethod || 'COD'}</span></td>
+            <td><span class="badge badge-${b.status}">${(b.status || '').replace('_', ' ')}</span></td>
+            <td class="price-cell">₹${(b.price_sim || 0).toLocaleString('en-IN')}</td>
+            ${showHelper ? `<td>${label}</td>` : ''}
+          </tr>`;
+      });
+      return t + '</tbody></table></div>';
+    }
+
+    /* ══════════════════════════════════════════════
+       3. MAIN INIT
+    ══════════════════════════════════════════════ */
+    async function init() {
+      try {
+        const [bookingsRes, servicesRes] = await Promise.all([
+          fetch('/api/bookings', { headers: defaultHeaders }),
+          fetch('/api/services',  { headers: defaultHeaders }),
+        ]);
+
+        if (bookingsRes.status === 401 || bookingsRes.status === 400) {
+          localStorage.clear();
+          window.location.href = 'index.html';
+          return;
+        }
+
+        const allBookings = await bookingsRes.json();
+        const allServices = await servicesRes.json();
+        let html = '';
+
+        /* ────────── ADMIN ────────── */
+        if (currentUser.role === 'admin') {
+          const completed   = allBookings.filter(b => b.status === 'completed');
+          const enRoute     = allBookings.filter(b => b.status === 'en_route');
+          const requested   = allBookings.filter(b => b.status === 'requested');
+          const totalRevenue = completed.reduce((s, b) => s + (b.price_sim || 0), 0);
+
+          html += `
+            <section class="card admin-overview">
+              <h2>Platform Operations</h2>
+              <div class="admin-stats-grid">
+                <div class="stat-widget"><h3>Total Requests</h3><div class="stat-value">${allBookings.length}</div></div>
+                <div class="stat-widget"><h3>Pending</h3><div class="stat-value" style="color:var(--warning)">${requested.length}</div></div>
+                <div class="stat-widget"><h3>En Route</h3><div class="stat-value status-enroute">${enRoute.length}</div></div>
+                <div class="stat-widget"><h3>Completed</h3><div class="stat-value" style="color:var(--accent)">${completed.length}</div></div>
+                <div class="stat-widget"><h3>Revenue</h3><div class="stat-value" style="color:var(--warning)">₹${totalRevenue.toLocaleString('en-IN')}</div></div>
+              </div>
+              <h2 style="margin-bottom:1rem;">Live Dispatch Radar</h2>
+              ${renderBookingTable(allBookings, true)}
+            </section>`;
+        }
+
+        /* ────────── USER / CUSTOMER ────────── */
+        if (currentUser.role === 'user') {
+          const myBookings  = allBookings.filter(b => b.customerId === currentUser.id);
+          const todayStr    = new Date().toISOString().split('T')[0];
+
+          let serviceOptions = '<option value="" disabled selected>Select a service…</option>';
+          allServices.forEach(s => {
+            serviceOptions += `<option value="${s.id}" data-name="${s.name}" data-price="${s.price}">[₹${s.price.toLocaleString('en-IN')}] ${s.name}</option>`;
+          });
+
+          html += `
+            <section class="card profile-summary-card">
+              <img src="${currentUser.profile_pic_sim}" alt="${currentUser.name}" onerror="this.src='https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(currentUser.name)}'">
+              <div class="profile-details">
+                <h3>Need help in ${currentUser.location}?</h3>
+                <p>Book a verified professional instantly to your doorstep.</p>
+                <span class="location-tag">📍 ${currentUser.location}, Nagpur</span>
+              </div>
+            </section>
+
+            <section class="card booking-section">
+              <h2>Request a Service</h2>
+              <div class="booking-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <select id="service-select" class="form-input" onchange="updatePricePreview()">
+                  ${serviceOptions}
+                </select>
+                <input type="date" id="service-date" class="form-input" min="${todayStr}" value="${todayStr}">
+                <input type="text" id="exact-location" class="form-input" placeholder="Exact Address / Landmark (Optional)">
+                <select id="payment-method" class="form-input">
+                  <option value="COD" selected>Cash on Delivery (COD)</option>
+                  <option value="UPI">BHIM UPI</option>
+                  <option value="Card">Credit / Debit Card</option>
+                </select>
+                <div id="price-preview" class="price-preview" style="display:none; grid-column: 1 / -1;"></div>
+                <button class="primary-btn btn-auto" onclick="requestService()" style="grid-column: 1 / -1;">Find Helper →</button>
+              </div>
+              <p id="booking-msg" style="margin-top:0.8rem;font-size:0.875rem;min-height:20px;"></p>
+            </section>
+
+            <section class="card history-section">
+              <h2>My Service History</h2>
+              ${myBookings.length ? renderBookingTable(myBookings.sort((a, b) => b.id - a.id)) : emptyState('No bookings yet. Request your first service above!')}
+            </section>`;
+        }
+
+        /* ────────── HELPER ────────── */
+        if (currentUser.role === 'helper') {
+          const availableJobs   = allBookings.filter(b => b.status === 'requested');
+          const myActiveJobs    = allBookings.filter(b => b.helperId === currentUser.id && b.status !== 'completed');
+          const myCompletedJobs = allBookings.filter(b => b.helperId === currentUser.id && b.status === 'completed');
+          const totalEarned     = myCompletedJobs.reduce((s, b) => s + (b.price_sim || 0), 0);
+
+          html += `
+            <section class="card profile-summary-card">
+              <img src="${currentUser.profile_pic_sim}" alt="${currentUser.name}" onerror="this.src='https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(currentUser.name)}'">
+              <div class="profile-details">
+                <h3>Ready to earn, ${currentUser.name.split(' ')[0]}?</h3>
+                <p>Accepting requests around <strong>${currentUser.location}</strong>. Pick up open jobs below.</p>
+                <span class="location-tag helper-tag">🚗 Helper Mode Active</span>
+              </div>
+            </section>
+
+            <section class="card assignments-section">
+              <h2>Current Assignments <span class="section-count">${myActiveJobs.length}</span></h2>
+              <div class="table-responsive">
+                <table>
+                  <thead><tr><th>Service</th><th>Customer</th><th>Location</th><th>Date</th><th>Price</th><th>Action</th></tr></thead>
+                  <tbody>
+                    ${myActiveJobs.length === 0 ? `<tr><td colspan="6" class="empty-state-cell">No active assignments. Accept a job below!</td></tr>` : myActiveJobs.map(b => {
+                          let actionBtn = '';
+                          if (b.status === 'accepted')  actionBtn = `<button class="btn-small btn-enroute"  onclick="updateStatus(${b.id},'en_route')">Start Journey 🚗</button>`;
+                          if (b.status === 'en_route')  actionBtn = `<button class="btn-small btn-complete" onclick="updateStatus(${b.id},'completed')">Mark Done ✓</button>`;
+                          if (b.status === 'requested') actionBtn = `<button class="btn-small btn-accept"   onclick="updateStatus(${b.id},'accepted')">Accept</button>`;
+                          const exact = b.exactLocation ? `<br><span style="font-size:0.8rem;color:var(--text-muted)">↳ ${b.exactLocation}</span>` : '';
+                          return `<tr>
+                            <td><span class="badge badge-${b.status}">${b.status.replace('_', ' ')}</span><span style="margin-left:6px">${b.serviceName}</span></td>
+                            <td>${b.customerName}</td>
+                            <td>📍 ${b.customerLocation}${exact}</td>
+                            <td>${b.date}</td>
+                            <td class="price-cell">₹${(b.price_sim || 0).toLocaleString('en-IN')}</td>
+                            <td>${actionBtn}</td>
+                          </tr>`;
+                        }).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="card job-board-section">
+              <h2>Open Requests in Nagpur <span class="section-count">${availableJobs.length}</span></h2>
+              <div class="job-board-grid">
+                ${availableJobs.length === 0 ? `<p class="empty-state-text">No new requests right now. Check back soon.</p>` : availableJobs.map(b => {
+                      const isNear   = b.customerLocation === currentUser.location;
+                      const distText = isNear ? '~0.5 km · Very Close' : '5–12 km away';
+                      const cls      = isNear ? 'border-near' : 'border-far';
+                      return `
+                        <div class="job-card ${cls}">
+                          <div class="job-info">
+                            <strong>${b.serviceName}</strong>
+                            <p>👤 ${b.customerName}</p>
+                            <p>📍 ${b.customerLocation} &nbsp;·&nbsp; ${distText}</p>
+                            ${b.exactLocation ? `<p style="color:var(--text); font-size:0.85rem;">🏠 ${b.exactLocation}</p>` : ''}
+                            <p style="margin-top:4px;">💳 Pay via: <strong>${b.paymentMethod || 'COD'}</strong></p>
+                            <p style="margin-top:4px;">📅 ${b.date}</p>
+                          </div>
+                          <div class="job-meta">
+                            <span class="job-price">₹${(b.price_sim || 0).toLocaleString('en-IN')}</span>
+                            <button class="btn-small btn-accept" onclick="updateStatus(${b.id},'accepted')">Accept Job</button>
+                          </div>
+                        </div>`;
+                    }).join('')}
+              </div>
+            </section>
+
+            <section class="card earnings-section">
+              <h2>Earnings History</h2>
+              <div class="earnings-summary">
+                <span class="earnings-label">Total Earned</span>
+                <span class="earnings-value">₹${totalEarned.toLocaleString('en-IN')}</span>
+              </div>
+              ${myCompletedJobs.length ? renderBookingTable(myCompletedJobs.sort((a, b) => b.id - a.id)) : emptyState('No completed jobs yet.')}
+            </section>`;
+        }
+
+        main.innerHTML = html || '<p class="empty-state-text">Nothing to display.</p>';
+
+      } catch (err) {
+        console.error('Dashboard error:', err);
+        main.innerHTML = `<div class="card" style="text-align:center;padding:3rem;"><p class="error-text">⚠️ Connection lost to Nagpur dispatch.</p><button class="primary-btn" style="margin-top:1.5rem;" onclick="init()">Retry</button></div>`;
+      }
+    }
+
+    /* ══════════════════════════════════════════════
+       4. ACTIONS
+    ══════════════════════════════════════════════ */
+    function updatePricePreview() {
+      const sel     = document.getElementById('service-select');
+      const preview = document.getElementById('price-preview');
+      if (!sel || !preview) return;
+      const opt = sel.options[sel.selectedIndex];
+      const price = opt?.getAttribute('data-price');
+      if (price) {
+        preview.style.display = 'flex';
+        preview.innerHTML     = `<span class="price-preview-label">Estimated Price</span><span class="price-preview-value">₹${parseInt(price).toLocaleString('en-IN')}</span>`;
+      } else {
+        preview.style.display = 'none';
+      }
+    }
+
+    async function requestService() {
+      const sel       = document.getElementById('service-select');
+      const dateEl    = document.getElementById('service-date');
+      const locEl     = document.getElementById('exact-location');
+      const payEl     = document.getElementById('payment-method');
+      
+      const serviceId = parseInt(sel?.value);
+      const date      = dateEl?.value;
+      const exactLocation = locEl?.value.trim() || '';
+      const paymentMethod = payEl?.value || 'COD';
+
+      if (!serviceId) return showBookingMsg('Please select a service.', true);
+      if (!date) return showBookingMsg('Please select a date.', true);
+
+      const serviceName = sel.options[sel.selectedIndex].getAttribute('data-name');
+      const btn = document.querySelector('.booking-section .primary-btn');
+      if (btn) { btn.disabled = true; btn.innerText = 'Searching helpers…'; }
+
+      try {
+        const res = await fetch('/api/bookings', {
+          method : 'POST',
+          headers: defaultHeaders,
+          body   : JSON.stringify({ serviceId, serviceName, date, exactLocation, paymentMethod }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || 'Request failed.');
+
+        showBookingMsg('✓ Service requested! Searching nearby helpers…', false);
+        setTimeout(() => init(), 1200);
+      } catch (e) {
+        showBookingMsg('Error: ' + e.message, true);
+        if (btn) { btn.disabled = false; btn.innerText = 'Find Helper →'; }
+      }
+    }
+
+    function showBookingMsg(msg, isError) {
+      const el = document.getElementById('booking-msg');
+      if (!el) return;
+      el.style.color   = isError ? 'var(--danger)' : 'var(--accent)';
+      el.innerText     = msg;
+    }
+
+    async function updateStatus(bookingId, newStatus) {
+      const btn = event?.target;
+      if (btn) { btn.disabled = true; btn.innerText = 'Updating…'; }
+      try {
+        const res = await fetch(`/api/bookings/${bookingId}`, { method: 'PUT', headers: defaultHeaders, body: JSON.stringify({ status: newStatus }) });
+        if (!res.ok) throw new Error((await res.json()).message || 'Update failed.');
+        init();
+      } catch (e) {
+        alert('Update failed: ' + e.message);
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+    init();
+  </script>
+</body>
+</html>
